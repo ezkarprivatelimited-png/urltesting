@@ -7,10 +7,10 @@ export default defineConfig({
    server: {
     host: true,
     allowedHosts: [
-      "lvh.me",
-      "*.lvh.me", 
-      "abc.lvh.me", 
-      "xyz.lvh.me", 
+      "ezkar.in",
+      "*.ezkar.in", 
+      "abc.ezkar.in", 
+      "xyz.ezkar.in", 
       "localhost",
       "127.0.0.1",
     ],
