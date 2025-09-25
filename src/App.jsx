@@ -5,7 +5,7 @@ function App() {
   const tenantHost = useTenant();
   const [company, setCompany] = useState(null);
   const [error, setError] = useState("");
-
+  console.log(tenantHost)
   useEffect(() => {
     fetch("http://localhost:3000/api/v1/company/company-info", {
       headers: { Host: tenantHost },
