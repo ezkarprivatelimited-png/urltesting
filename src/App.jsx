@@ -1,24 +1,31 @@
 import { useEffect, useState } from "react";
 import { useTenant } from "./hooks/useTenant";
+import axios from "axios";
 
 function App() {
   const tenantHost = useTenant();
   const [company, setCompany] = useState(null);
   const [error, setError] = useState("");
-  console.log(tenantHost)
+  console.log(tenantHost);
   useEffect(() => {
-    fetch("http://localhost:3000/api/v1/company/company-info", {
-      headers: { host: tenantHost },
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    const sendData = async () => {
+      try {
+        const { data } = await axios.post(
+          "http://localhost:3000/api/v1/company/company-info",
+          {
+            headers: { host: tenantHost },
+          }
+        );
         if (data.error || data.message) {
           setError(data.message || data.error);
         } else {
           setCompany(data);
         }
-      })
-      .catch(() => setError("Something went wrong"));
+      } catch (e) {
+        console.log(e);
+      }
+      sendData();
+    };
   }, [tenantHost]);
 
   if (error) {
