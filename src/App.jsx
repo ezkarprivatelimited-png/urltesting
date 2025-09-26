@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useTenant } from "./hooks/useTenant";
 import axios from "axios";
+import { BrowserRouter, Routes,Route } from "react-router-dom";
+import LoginPage from "./components/LoginPage";
+import Dashboard from "./components/Dashboard";
 
 // ✅ Utility: cache with expiry
 function setWithExpiry(key, value, ttl) {
@@ -26,19 +29,9 @@ function getWithExpiry(key) {
 
 function App() {
   const tenantHost = useTenant();
-  const [company, setCompany] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!tenantHost) return;
-
-    // ✅ Check sessionStorage cache first
-    const cached = getWithExpiry(`tenantInfo-${tenantHost}`);
-    if (cached) {
-      setCompany(cached);
-      return;
-    }
-
     const sendData = async () => {
       try {
         const { data } = await axios.get(
@@ -52,7 +45,6 @@ function App() {
           setError(data.message);
         } else {
           setCompany(data);
-        // ✅ Cache for 24h
           setWithExpiry(`tenantInfo-${tenantHost}`, data, 24 * 60 * 60 * 1000);
         }
       } catch (e) {
@@ -64,24 +56,17 @@ function App() {
     sendData();
   }, [tenantHost]); // ✅ Depend on tenantHost
 
-  if (error) return <p className="text-red-600">{error}</p>;
-  if (!company) return <p>Loading...</p>;
+  
+  
+  return(
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage/>} />
+        <Route path="/" element={<Dashboard error={error}  />} />
+      </Routes>
+    </BrowserRouter>
+  )
 
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-lg rounded-2xl p-6 w-96 text-center">
-        {company.logoUrl && (
-          <img
-            src={company.logoUrl}
-            alt={company.name}
-            className="h-20 mx-auto mb-4"
-          />
-        )}
-        <h1 className="text-2xl font-bold mb-2">{company.name}</h1>
-        <p className="text-gray-600">Welcome to {company.subdomain}</p>
-      </div>
-    </div>
-  );
 }
 
 export default App;
