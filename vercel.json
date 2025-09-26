@@ -7,17 +7,14 @@
   ],
   "redirects": [
     {
-      "source": "/",
-      "destination": "https://ezkar.in",
-      "permanent": true
-    },
-    {
-      "source": "https://www.ezkar.in/:path*",
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.ezkar.in" }],
       "destination": "https://ezkar.in/:path*",
       "permanent": true
     },
     {
-      "source": "https://www.:tenant.ezkar.in/:path*",
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.:tenant.ezkar.in" }],
       "destination": "https://:tenant.ezkar.in/:path*",
       "permanent": true
     }
