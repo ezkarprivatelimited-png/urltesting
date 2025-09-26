@@ -5,13 +5,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 import Dashboard from "./components/Dashboard";
 
-// ✅ Utility: cache with expiry
-function setWithExpiry(key, value, ttl) {
-  const now = Date.now();
-  const item = { value, expiry: now + ttl };
-  sessionStorage.setItem(key, JSON.stringify(item));
-}
-
 function App() {
   const tenantHost = useTenant();
   const [error, setError] = useState("");
@@ -30,7 +23,7 @@ function App() {
           setError(data.message);
         } else {
           setCompany(data);
-          setWithExpiry(`tenantInfo-${tenantHost}`, data, 24 * 60 * 60 * 1000);
+          sessionStorage.setItem("tenant-host",JSON.stringify(data));
         }
       } catch (e) {
         console.error("API call failed:", e);

@@ -1,26 +1,10 @@
 import React, { useEffect } from "react";
-
+import { useTenant } from "../hooks/useTenant";
 const Dashboard = ({ error ,company, setCompany}) => {
- 
-  function getWithExpiry(key) {
-    const itemStr = sessionStorage.getItem(key);
-    if (!itemStr) return null;
-    try {
-      const item = JSON.parse(itemStr);
-      if (Date.now() > item.expiry) {
-        sessionStorage.removeItem(key);
-        return null;
-      }
-      return item.value;
-    } catch {
-      return null;
-    }
-  }
+    const tenantHost=useTenant();
   useEffect(() => {
     if (!tenantHost) return;
-
-    // ✅ Check sessionStorage cache first
-    const cached = getWithExpiry(`tenantInfo-${tenantHost}`);
+    const cached = sessionStorage.getItem("tenant-host");
     if (cached) {
       setCompany(cached);
       return;
