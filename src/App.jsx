@@ -8,7 +8,7 @@ function App() {
   console.log(tenantHost)
   useEffect(() => {
     fetch("http://localhost:3000/api/v1/company/company-info", {
-      headers: { Host: tenantHost },
+      headers: { host: tenantHost },
     })
       .then((res) => res.json())
       .then((data) => {
