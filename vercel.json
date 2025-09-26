@@ -5,7 +5,10 @@
   "redirects": [
     {
       "source": "/:path*",
-      "destination": "/",
+      "has": [
+        { "type": "host", "value": "www.ezkar.in" }
+      ],
+      "destination": "https://ezkar.in/:path*",
       "permanent": true
     }
   ]
