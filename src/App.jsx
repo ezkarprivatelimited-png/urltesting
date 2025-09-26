@@ -8,7 +8,6 @@ function App() {
   const [error, setError] = useState("");
   console.log(tenantHost);
   useEffect(() => {
-    // If tenantHost is empty or undefined, don't call the API
     if (!tenantHost) return;
 
     const sendData = async () => {
@@ -16,12 +15,9 @@ function App() {
         const { data } = await axios.get(
           "http://localhost:3000/api/v1/company/company-info",
           {
-            // ✅ Correct place for headers in axios.get: second argument (config)
             headers: { "tenant-host": tenantHost },
           }
         );
-
-        // ✅ Only set error if `error` or `message` indicates a problem
         if (data.error) {
           setError(data.error);
         } else if (data.message && !data.companyId) {
