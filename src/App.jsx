@@ -33,7 +33,7 @@ function App() {
     };
 
     sendData();
-  }, [tenantHost]);
+  }, []);
 
   if (error) {
     return (
