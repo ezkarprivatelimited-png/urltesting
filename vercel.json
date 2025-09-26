@@ -1,5 +1,22 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.ezkar.in" }],
+      "destination": "https://ezkar.in/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.:tenant.ezkar.in" }],
+      "destination": "https://:tenant.ezkar.in/:path*",
+      "permanent": true
+    }
   ]
 }
