@@ -1,8 +1,22 @@
 import React, { useEffect } from "react";
 
-const Dashboard = ({error}) => {
-  const [company, setCompany] = useState(null);
-  useEffect(()=>{
+const Dashboard = ({ error ,company, setCompany}) => {
+ 
+  function getWithExpiry(key) {
+    const itemStr = sessionStorage.getItem(key);
+    if (!itemStr) return null;
+    try {
+      const item = JSON.parse(itemStr);
+      if (Date.now() > item.expiry) {
+        sessionStorage.removeItem(key);
+        return null;
+      }
+      return item.value;
+    } catch {
+      return null;
+    }
+  }
+  useEffect(() => {
     if (!tenantHost) return;
 
     // ✅ Check sessionStorage cache first
@@ -11,8 +25,7 @@ const Dashboard = ({error}) => {
       setCompany(cached);
       return;
     }
-  },[])
-
+  }, []);
 
   if (error) return <p className="text-red-600">{error}</p>;
   if (!company) return <p>Loading...</p>;

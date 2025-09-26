@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTenant } from "./hooks/useTenant";
 import axios from "axios";
-import { BrowserRouter, Routes,Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 import Dashboard from "./components/Dashboard";
 
@@ -12,25 +12,10 @@ function setWithExpiry(key, value, ttl) {
   sessionStorage.setItem(key, JSON.stringify(item));
 }
 
-function getWithExpiry(key) {
-  const itemStr = sessionStorage.getItem(key);
-  if (!itemStr) return null;
-  try {
-    const item = JSON.parse(itemStr);
-    if (Date.now() > item.expiry) {
-      sessionStorage.removeItem(key);
-      return null;
-    }
-    return item.value;
-  } catch {
-    return null;
-  }
-}
-
 function App() {
   const tenantHost = useTenant();
   const [error, setError] = useState("");
-
+  const [company, setCompany] = useState(null);
   useEffect(() => {
     const sendData = async () => {
       try {
@@ -56,17 +41,23 @@ function App() {
     sendData();
   }, [tenantHost]); // ✅ Depend on tenantHost
 
-  
-  
-  return(
+  return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<LoginPage/>} />
-        <Route path="/" element={<Dashboard error={error}  />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/"
+          element={
+            <Dashboard
+              error={error}
+              company={company}
+              setCompany={setCompany}
+            />
+          }
+        />
       </Routes>
     </BrowserRouter>
-  )
-
+  );
 }
 
 export default App;
