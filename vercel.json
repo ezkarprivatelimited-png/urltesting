@@ -1,6 +1,16 @@
-
 {
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
   "redirects": [
+    {
+      "source": "/",
+      "destination": "https://ezkar.in",
+      "permanent": true
+    },
     {
       "source": "https://www.ezkar.in/:path*",
       "destination": "https://ezkar.in/:path*",
