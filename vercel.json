@@ -1,5 +1,14 @@
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+  "redirects": [
+    {
+      "source": "https://www.ezkar.in/:path*",
+      "destination": "https://ezkar.in/:path*",
+      "permanent": true
+    },
+    {
+      "source": "https://www.:tenant.ezkar.in/:path*",
+      "destination": "https://:tenant.ezkar.in/:path*",
+      "permanent": true
+    }
   ]
 }
