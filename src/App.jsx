@@ -13,7 +13,7 @@ function App() {
     const sendData = async () => {
       try {
         const { data } = await axios.get(
-          "http://192.168.31.228:3000/api/v1/company/company-info",
+          "http://localhost:3000/api/v1/company/company-info",
           {
             headers: { "tenant-host": tenantHost },
           }
