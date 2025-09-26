@@ -8,24 +8,35 @@ function App() {
   const [error, setError] = useState("");
   console.log(tenantHost);
   useEffect(() => {
+    // If tenantHost is empty or undefined, don't call the API
+    if (!tenantHost) return;
+
     const sendData = async () => {
       try {
-        const { data } = await axios.post(
+        const { data } = await axios.get(
           "http://localhost:3000/api/v1/company/company-info",
           {
-            headers: { host: tenantHost },
+            // ✅ Correct place for headers in axios.get: second argument (config)
+            headers: { "tenant-host": tenantHost },
           }
         );
-        if (data.error || data.message) {
-          setError(data.message || data.error);
+
+        // ✅ Only set error if `error` or `message` indicates a problem
+        if (data.error) {
+          setError(data.error);
+        } else if (data.message && !data.companyId) {
+          // sometimes APIs send `message` for errors, check carefully
+          setError(data.message);
         } else {
           setCompany(data);
         }
       } catch (e) {
-        console.log(e);
+        console.error("API call failed:", e);
+        setError("Unable to fetch company info");
       }
-      sendData();
     };
+
+    sendData();
   }, [tenantHost]);
 
   if (error) {
